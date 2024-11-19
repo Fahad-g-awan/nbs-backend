@@ -23,9 +23,9 @@ const verifyToken = (req, res, next) => {
 };
 
 // Routes
-router.post("/space-association", verifyToken, createSA);
-router.put("/space-association/:id", verifyToken, updateSA);
-router.delete("/space-association/:id", verifyToken, deleteSA);
-router.get("/space-association", getAllSA);
+router.post("/spaces", verifyToken, createSA);
+router.put("/spaces/:id", verifyToken, updateSA);
+router.delete("/spaces/:id", verifyToken, deleteSA);
+router.get("/spaces", getAllSA);
 
 module.exports = router;

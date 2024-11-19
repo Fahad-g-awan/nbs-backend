@@ -25,20 +25,48 @@ const getAllCategories = async (req, res) => {
   }
 };
 
+// const updateCategories = async (req, res) => {
+//   const { id } = req.params;
+//   const { category, sub_categories } = req.body;
+
+//   try {
+//     const foundCategory = await Category.findByPk(id);
+
+//     if (!foundCategory) {
+//       return res.status(404).json({ message: "Category not found" });
+//     }
+
+//     foundCategory.category = category;
+//     foundCategory.category = category;
+
+//     await foundCategory.save();
+
+//     res
+//       .status(200)
+//       .json({ message: "Category updated successfully", foundCategory });
+//   } catch (err) {
+//     console.error("Error updating Category:", err);
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
+
 const updateCategories = async (req, res) => {
   const { id } = req.params;
   const { category, sub_categories } = req.body;
 
   try {
+    // Find the category by ID
     const foundCategory = await Category.findByPk(id);
 
     if (!foundCategory) {
       return res.status(404).json({ message: "Category not found" });
     }
 
+    // Update category and subcategories
     foundCategory.category = category;
-    foundCategory.category = category;
+    foundCategory.sub_categories = sub_categories; // Update subcategories
 
+    // Save the updated category
     await foundCategory.save();
 
     res
