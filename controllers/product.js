@@ -1,7 +1,7 @@
 const { Product } = require("../models");
 
 const createProduct = async (req, res) => {
-  let { name, description, price, metadata } = req.body;
+  let { name, description, price, metadata, tags = [] } = req.body;
   metadata = JSON.parse(metadata);
   console.log("metadata", metadata);
 
@@ -14,6 +14,7 @@ const createProduct = async (req, res) => {
       description,
       price,
       metadata: metadata,
+      tags: tags.length ? tags : [],
     });
     res.status(201).json(newProduct);
   } catch (err) {
@@ -35,7 +36,7 @@ const getAllProducts = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { img_url, name, description, price } = req.body;
+  const { existingImgUrls = [], name, description, price } = req.body;
 
   try {
     // Find the product by ID
@@ -91,7 +92,7 @@ module.exports = {
 
 // metadata = {
 //   make: 2024,
-//   color: "black,brown",
+//   color: ["black", "brown"],
 //   materialCategory: [
 //     { id: 1, material: "Wooden" },
 //     { id: 2, material: "Leather" },
@@ -121,3 +122,5 @@ module.exports = {
 //     { id: 7, style: "Minimalist" },
 //   ],
 // };
+
+// formdata.append("metadata", JSON.stringify(metdata));

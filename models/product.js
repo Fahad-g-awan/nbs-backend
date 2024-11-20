@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       price: DataTypes.INTEGER,
       metadata: DataTypes.JSON,
+      tags: {
+        allowNull: true,
+        type: DataTypes.ARRAY(DataTypes.STRING),
+      },
     },
     {
       sequelize,
