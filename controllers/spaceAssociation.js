@@ -14,6 +14,7 @@ const createSA = async (req, res) => {
   }
 };
 
+
 const getAllSA = async (req, res) => {
   try {
     const allnewSA = await SpaceAssociation.findAll();

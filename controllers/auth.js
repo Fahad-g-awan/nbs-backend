@@ -10,7 +10,22 @@ const signup = async (req, res) => {
     /**
      * Ansar add here validations for req body
      */
-
+    // Manual validations
+    //  if (!name || typeof name !== "string") {
+    //   return res.status(400).json({ message: "Name is required and must be a string." });
+    // }
+    // if (!email || !email.includes("@")) {
+    //   return res.status(400).json({ message: "Valid email is required." });
+    // }
+    // if (!password || password.length < 6) {
+    //   return res.status(400).json({ message: "Password must be at least 6 characters long." });
+    // }
+    // if (!phone || !/^\d+$/.test(phone)) {
+    //   return res.status(400).json({ message: "Phone number must be numeric." });
+    // }
+    // if (!user_type || !["admin", "user"].includes(user_type)) {
+    //   return res.status(400).json({ message: "User type must be 'admin' or 'user'." });
+    // }
     const admin = await createAdmin(name, email, password, phone, user_type);
 
     res.status(200).json({
@@ -24,9 +39,11 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     if (error.message === "admin exist") {
+      res.status(409).json({ message: "admin is already exist" });
+    } else if (error.message === "user exist") {
       res
         .status(409)
-        .json({ message: "User already exists with the given credentials." });
+        .json({ message: " User already exists with the given credentials." });
     } else {
       res
         .status(500)
