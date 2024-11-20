@@ -23,7 +23,7 @@ const { Product } = require("../models");
 // };
 
 const createProduct = async (req, res) => {
-  let { name, description, price, metadata } = req.body;
+  let { name, description, price, metadata, tags = [] } = req.body;
 
   try {
     // Parse metadata only if it's a string
@@ -35,6 +35,7 @@ const createProduct = async (req, res) => {
 
     // Process image URLs if files are present
     const img_urls = req.files ? req.files.map((file) => file.path) : [];
+    console.log("img_urls", img_urls);
 
     // Create the new product
     const newProduct = await Product.create({
@@ -99,24 +100,30 @@ const getAllProducts = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, metadata } = req.body;
+  console.log("===========ID", id);
+  let { name, description, price, metadata, existingImgUrls = [] } = req.body;
   const img_urls = req.files ? req.files.map((file) => file.path) : [];
+  console.log("img_urls", img_urls);
 
   try {
     // Find the product by ID
+    existingImgUrls = existingImgUrls.length ? JSON.parse(existingImgUrls) : [];
     const product = await Product.findByPk(id);
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    const new_img_urls = existingImgUrls.concat(img_urls);
+    console.log("new_img_urls", new_img_urls);
+
     // Update the product fields
     product.name = name;
     product.description = description;
     product.price = price;
     product.metadata = JSON.parse(metadata); // If metadata is being updated
-    if (img_urls.length > 0) {
-      product.img_url = img_urls; // Update image URLs if new images are provided
+    if (new_img_urls.length > 0) {
+      product.img_url = new_img_urls; // Update image URLs if new images are provided
     }
 
     // Save the updated product

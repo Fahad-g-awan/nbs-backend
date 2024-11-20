@@ -25,7 +25,12 @@ const verifyToken = (req, res, next) => {
 
 // Routes
 router.post("/products", verifyToken, upload.array("images", 5), createProduct);
-router.put("/products/:id", verifyToken, updateProduct);
+router.put(
+  "/products/:id",
+  verifyToken,
+  upload.array("images", 5),
+  updateProduct
+);
 router.delete("/products/:id", verifyToken, deleteProduct);
 router.get("/products", getAllProducts);
 
