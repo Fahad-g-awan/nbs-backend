@@ -26,7 +26,8 @@ const getAllFeature = async (req, res) => {
 
 const updateFeature = async (req, res) => {
   const { id } = req.params;
-  const { style, color, features } = req.body;
+  const { features } = req.body;
+  // const { style, color, features } = req.body;
 
   try {
     const foundFeature = await Feature.findByPk(id);
@@ -35,7 +36,7 @@ const updateFeature = async (req, res) => {
       return res.status(404).json({ message: "Feature not found" });
     }
 
-    foundFeature.features = features;
+    foundFeature.feature = features;
     await foundFeature.save();
 
     res.status(200).json({

@@ -1,24 +1,59 @@
 const { Product } = require("../models");
 
+// const createProduct = async (req, res) => {
+//   let { name, description, price, metadata } = req.body;
+//   metadata = JSON.parse(metadata);
+//   console.log("metadata", metadata);
+
+//   try {
+//     const img_urls = req.files ? req.files.map((file) => file.path) : [];
+
+//     const newProduct = await Product.create({
+//       image_url: img_urls,
+//       name,
+//       description,
+//       price,
+//       metadata: metadata,
+//     });
+//     res.status(201).json(newProduct);
+//   } catch (err) {
+//     console.error("Error creating product:", err);
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
+
 const createProduct = async (req, res) => {
   let { name, description, price, metadata } = req.body;
-  metadata = JSON.parse(metadata);
-  console.log("metadata", metadata);
 
   try {
+    // Parse metadata only if it's a string
+    if (typeof metadata === "string") {
+      metadata = JSON.parse(metadata);
+    }
+
+    console.log("metadata after parsing:", metadata); // Log metadata to check it
+
+    // Process image URLs if files are present
     const img_urls = req.files ? req.files.map((file) => file.path) : [];
 
+    // Create the new product
     const newProduct = await Product.create({
       image_url: img_urls,
       name,
       description,
       price,
-      metadata: metadata,
+      metadata, // metadata is expected to be an object
     });
+
+    // Return the newly created product
     res.status(201).json(newProduct);
   } catch (err) {
     console.error("Error creating product:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({
+      message: "Server error",
+      error: err.message,
+      stack: err.stack, // Optionally include stack trace for debugging
+    });
   }
 };
 
@@ -33,9 +68,38 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// const updateProduct = async (req, res) => {
+//   const { id } = req.params;
+//   const { img_url, name, description, price } = req.body;
+
+//   try {
+//     // Find the product by ID
+//     const product = await Product.findByPk(id);
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     // Update the product fields
+//     product.img_url = img_url;
+//     product.name = name;
+//     product.description = description;
+//     product.price = price;
+
+//     // Save the updated product
+//     await product.save();
+
+//     res.status(200).json({ message: "Product updated successfully", product });
+//   } catch (err) {
+//     console.error("Error updating product:", err);
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
+
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { img_url, name, description, price } = req.body;
+  const { name, description, price, metadata } = req.body;
+  const img_urls = req.files ? req.files.map((file) => file.path) : [];
 
   try {
     // Find the product by ID
@@ -46,10 +110,13 @@ const updateProduct = async (req, res) => {
     }
 
     // Update the product fields
-    product.img_url = img_url;
     product.name = name;
     product.description = description;
     product.price = price;
+    product.metadata = JSON.parse(metadata); // If metadata is being updated
+    if (img_urls.length > 0) {
+      product.img_url = img_urls; // Update image URLs if new images are provided
+    }
 
     // Save the updated product
     await product.save();
