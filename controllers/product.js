@@ -103,7 +103,6 @@ const updateProduct = async (req, res) => {
   console.log("===========ID", id);
   let { name, description, price, metadata, existingImgUrls = [] } = req.body;
   const img_urls = req.files ? req.files.map((file) => file.path) : [];
-  console.log("img_urls", img_urls);
 
   try {
     // Find the product by ID
@@ -115,7 +114,6 @@ const updateProduct = async (req, res) => {
     }
 
     const new_img_urls = existingImgUrls.concat(img_urls);
-    console.log("new_img_urls", new_img_urls);
 
     // Update the product fields
     product.name = name;
@@ -123,7 +121,7 @@ const updateProduct = async (req, res) => {
     product.price = price;
     product.metadata = JSON.parse(metadata); // If metadata is being updated
     if (new_img_urls.length > 0) {
-      product.img_url = new_img_urls; // Update image URLs if new images are provided
+      product.image_url = new_img_urls; // Update image URLs if new images are provided
     }
 
     // Save the updated product
