@@ -15,9 +15,7 @@ const createUser = async (req, res) => {
     console.log("user exist", oldUser);
 
     if (oldUser) {
-      return res
-        .status(409)
-        .json({ error: "User already exist with this email" });
+      return res.status(200).json({ message: "User exist", user: oldUser });
     }
 
     const newUser = await User.create({
