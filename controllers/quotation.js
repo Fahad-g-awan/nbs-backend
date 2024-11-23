@@ -4,7 +4,7 @@ const createQuotation = async (req, res) => {
   try {
     const { user_id, cart, total } = req.body;
 
-    if (!user_name || !user_phone || !user_email || !cart || !total) {
+    if (!user_id || !cart || !total) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 

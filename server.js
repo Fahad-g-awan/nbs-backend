@@ -53,3 +53,5 @@ sequelize
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error("Database connection failed:", err));
+
+
