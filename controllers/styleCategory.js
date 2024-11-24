@@ -26,7 +26,7 @@ const getAllStyleCategory = async (req, res) => {
 
 const updateStyleCategory = async (req, res) => {
   const { id } = req.params;
-  const { style } = req.body;
+  const { styles } = req.body;
 
   try {
     const foundStyle = await StyleCategory.findByPk(id);
@@ -35,7 +35,7 @@ const updateStyleCategory = async (req, res) => {
       return res.status(404).json({ message: "Feature not found" });
     }
 
-    foundStyle.style = style;
+    foundStyle.style = styles;
     await foundStyle.save();
 
     res.status(200).json({

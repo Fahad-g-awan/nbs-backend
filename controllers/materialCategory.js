@@ -26,7 +26,7 @@ const getAllMaterialCategory = async (req, res) => {
 
 const updateMaterialCategory = async (req, res) => {
   const { id } = req.params;
-  const { material } = req.body;
+  const { materials } = req.body;
 
   try {
     const foundMC = await MaterialCategory.findByPk(id);
@@ -35,7 +35,7 @@ const updateMaterialCategory = async (req, res) => {
       return res.status(404).json({ message: "Material Category not found" });
     }
 
-    foundMC.material = material;
+    foundMC.material = materials;
     await foundMC.save();
 
     res.status(200).json({
