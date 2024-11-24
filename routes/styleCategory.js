@@ -3,7 +3,7 @@ const {
   updateStyleCategory,
   deleteStyleCategory,
   getAllStyleCategory,
-} = require("../controllers/StyleCategory");
+} = require("../controllers/styleCategory");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
